@@ -6,6 +6,14 @@ a captcha bot that leveraging telegram login api and cloudflare turnstile, add [
 | -------------------- | :-------------------: |
 | ![s1](static/s1.png) | ![s2](static/s2.jpeg) |
 
+## Technology
+
+- [x] Telegram API
+- [x] Baselime.io
+- [x] Cloudflare D1
+- [x] Cloudflare Pages
+- [ ] Cloudflare Durable Object
+
 ## Schema Init
 
 ```sh
