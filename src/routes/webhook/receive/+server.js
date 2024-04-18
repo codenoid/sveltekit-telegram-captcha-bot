@@ -124,7 +124,7 @@ export async function POST({ request, url, platform, locals }) {
 				error(500, 'error');
 			}
 
-			if (resultJson.ok) {
+			if (responseJson.ok) {
 				await platform.env.DB.prepare('INSERT INTO tg_waitlist VALUES (?, ?, ?, ?, ?, ?, ?)')
 					.bind(
 						requestId,
@@ -133,7 +133,7 @@ export async function POST({ request, url, platform, locals }) {
 						message.date,
 						'wait-for-verification',
 						nanoid(4),
-						resultJson.result.message_id
+						responseJson.result.message_id
 					)
 					.run();
 			}
