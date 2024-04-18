@@ -6,9 +6,14 @@ export async function handle({ event, resolve }) {
 		waitUntil: () => {},
 		passThroughOnException: () => {}
 	};
+
+	var namespace = event.url.pathname;
+	if (namespace.startsWith("/verify")) {
+		namespace = "/verify"
+	}
 	const logger = new BaselimeLogger({
 		ctx: context,
-		namespace: event.request.url,
+		namespace: namespace,
 		dataset: 'tgcaptchabot-ds',
 		apiKey: env.BASELIME_API_KEY,
 		service: 'tgcaptchabot',
