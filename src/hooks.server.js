@@ -6,8 +6,13 @@ export async function handle({ event, resolve }) {
 		return new Response('custom response');
 	}
 
+	const context = event.platform?.context || {
+		waitUntil: () => {},
+		passThroughOnException: () => {}
+	};
 	const logger = new BaselimeLogger({
-		ctx: event.platform.context,
+		ctx: context,
+		namespace: event.request.url,
 		apiKey: env.BASELIME_API_KEY,
 		service: 'tgcaptchabot',
 		requestId: crypto.randomUUID()
@@ -15,5 +20,7 @@ export async function handle({ event, resolve }) {
 
 	event.locals.logger = logger;
 	const response = await resolve(event);
+
+	context.waitUntil(logger.flush());
 	return response;
 }
