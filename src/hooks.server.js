@@ -26,7 +26,7 @@ export async function handle({ event, resolve }) {
 	const response = await resolve(event);
 	if (!response.ok && response.status != 404) {
 		const { url } = event;
-		const ip = request.headers.get('cf-connecting-ip');
+		const ip = event.request.headers.get('cf-connecting-ip');
 		logger.error('WebAppError', {
 			url: {
 				href: url.href,
