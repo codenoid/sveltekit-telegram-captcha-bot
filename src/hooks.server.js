@@ -8,8 +8,8 @@ export async function handle({ event, resolve }) {
 	};
 
 	var namespace = event.url.pathname;
-	if (namespace.startsWith("/verify")) {
-		namespace = "/verify"
+	if (namespace.startsWith('/verify')) {
+		namespace = '/verify';
 	}
 	const logger = new BaselimeLogger({
 		ctx: context,
@@ -22,6 +22,9 @@ export async function handle({ event, resolve }) {
 
 	event.locals.logger = logger;
 	const response = await resolve(event);
+	if (!response.ok) {
+		logger.error("WebAppError", {request: event.request})
+	}
 
 	context.waitUntil(logger.flush());
 	return response;

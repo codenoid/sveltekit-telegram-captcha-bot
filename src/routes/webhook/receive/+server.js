@@ -11,7 +11,6 @@ export async function POST({ request, url, platform, locals }) {
 
 	if (!isInSubnet(ip, '149.154.160.0/20') && !isInSubnet(ip, '91.108.4.0/22')) {
 		locals.logger.info('Request from outside allowed subnet', { payload: { ip } });
-		locals.logger.flush();
 		return json({});
 	}
 
@@ -60,13 +59,11 @@ export async function POST({ request, url, platform, locals }) {
 							})
 						);
 						locals.logger.warn('Banned user with automated account', { payload: { newMember } });
-						locals.logger.flush();
 						return json({});
 					case 2:
 						locals.logger.info('Allowing user with non-automated account', {
 							payload: { newMember }
 						});
-						locals.logger.flush();
 						return json({});
 				}
 			}
@@ -95,7 +92,6 @@ export async function POST({ request, url, platform, locals }) {
 			).json();
 			if (!responseJson.ok) {
 				locals.logger.error('error restrict', { payload: { response: responseJson, request } });
-				locals.logger.flush();
 				error(500, 'error');
 			}
 
@@ -120,7 +116,6 @@ export async function POST({ request, url, platform, locals }) {
 				locals.logger.error('error send greeting', {
 					payload: { response: responseJson, request }
 				});
-				locals.logger.flush();
 				error(500, 'error');
 			}
 

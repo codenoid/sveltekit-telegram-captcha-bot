@@ -29,7 +29,6 @@ WHERE tg_waitlist.request_id = ?;`
 		}
 	} catch (e) {
 		locals.logger.error('invalid signature', { payload: { error: e.message } });
-		locals.logger.flush();
 		return error(403, 'invalid signature ' + e.message);
 	}
 
@@ -56,7 +55,6 @@ export const actions = {
 
 		if (outcome?.success != true) {
 			locals.logger.warn('Failed to validate Captcha', { payload: { request } });
-			locals.logger.flush();
 			return { success: false, message: 'Gagal Memvalidasi Captcha' };
 		}
 
@@ -82,7 +80,6 @@ export const actions = {
 			}
 		} catch (e) {
 			locals.logger.error('invalid signature', { payload: { error: e.message, request } });
-			locals.logger.flush();
 			return error(403, 'invalid signature ' + e.message);
 		}
 
@@ -113,7 +110,6 @@ export const actions = {
 
 		if (!responseJson.ok) {
 			locals.logger.error('error tg update', { payload: { response: responseJson, request } });
-			locals.logger.flush();
 			error(500, 'error tg update');
 		}
 
@@ -128,7 +124,6 @@ export const actions = {
 
 		if (!responseJson.ok) {
 			locals.logger.error('error tg update', { payload: { response: responseJson, request } });
-			locals.logger.flush();
 			error(500, 'tg sudah di allow, namun error menghapus pesan robot');
 		}
 
