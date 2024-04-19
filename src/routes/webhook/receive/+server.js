@@ -9,12 +9,14 @@ const nanoid = customAlphabet('23456789ABCDEFGHJKLMNPRTWXYZ', 10);
 export async function POST({ request, url, platform, locals }) {
 	const ip = request.headers.get('cf-connecting-ip');
 
+	const payload = await request.json();
+	locals.logger.info("new webhook request", payload)
+
 	if (!isInSubnet(ip, '149.154.160.0/20') && !isInSubnet(ip, '91.108.4.0/22')) {
-		locals.logger.info('Request from outside allowed subnet', { payload: { ip } });
+		locals.logger.info('Request from outside allowed subnet', { ip });
 		return json({});
 	}
 
-	const payload = await request.json();
 	if ('message' in payload) {
 		const message = payload.message;
 
@@ -23,9 +25,13 @@ export async function POST({ request, url, platform, locals }) {
 		}
 
 		if ('new_chat_member' in message) {
-			await fetch(
-				apiUrl('deleteMessage', { chat_id: message.chat.id, message_id: message.message_id })
-			);
+			try {
+				await fetch(
+					apiUrl('deleteMessage', { chat_id: message.chat.id, message_id: message.message_id })
+				);
+			} catch (e) {
+				locals.logger.error("service message delete", e);
+			}
 
 			const newMember = message['new_chat_member'];
 
