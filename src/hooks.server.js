@@ -24,7 +24,7 @@ export async function handle({ event, resolve }) {
 
 	event.locals.logger = logger;
 	const response = await resolve(event);
-	if (!response.ok && response.status != 404) {
+	if (response.status >= 500) {
 		const { url } = event;
 		const ip = event.request.headers.get('cf-connecting-ip');
 		logger.error('WebAppError', {
