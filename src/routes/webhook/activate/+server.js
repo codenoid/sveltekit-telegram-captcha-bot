@@ -1,6 +1,6 @@
 import { env } from '$env/dynamic/private';
 import { apiUrl } from '$lib/api-url.js';
-import { error } from '@sveltejs/kit';
+import { error, json } from '@sveltejs/kit';
 
 export async function GET({ request, url }) {
 	const authorization = request.headers.get('Authorization');
@@ -15,7 +15,7 @@ export async function GET({ request, url }) {
 
 	const token = authorization.replace('Basic ', '');
 
-	const [username, password] = Buffer.from(token, 'base64').toString().split(':');
+	const [username, password] = atob(token).split(':');
 
 	if (username != env.ADMIN_USERNAME || password != env.ADMIN_PASSWORD) {
 		error(401, 'unauthorized');
