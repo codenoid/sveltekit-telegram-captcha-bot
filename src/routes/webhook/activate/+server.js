@@ -21,11 +21,42 @@ export async function GET({ request, url }) {
 		error(401, 'unauthorized');
 	}
 
+	await fetch(apiUrl('deleteWebhook', {}));
+
+	const allowed_updates = [
+		'update_id',
+		'message',
+		'edited_message',
+		'channel_post',
+		'edited_channel_post',
+		'business_connection',
+		'business_message',
+		'edited_business_message',
+		'deleted_business_messages',
+		'message_reaction',
+		'message_reaction_count',
+		'inline_query',
+		'chosen_inline_result',
+		'shipping_query',
+		'pre_checkout_query',
+		'poll',
+		'poll_answer',
+		'my_chat_member',
+		'chat_member',
+		'chat_join_request',
+		'chat_boost',
+		'removed_chat_boost'
+	];
 	const webhookUrl = `${url.protocol}//${url.hostname}/webhook/receive`;
 	const r = await (
 		await fetch(
-			apiUrl('setWebhook', { url: webhookUrl, secret_token: env.TG_WEBHOOK_VERIFY_SECRET })
+			apiUrl('setWebhook', {
+				url: webhookUrl,
+				allowed_updates,
+				max_connections: 100,
+				secret_token: env.TG_WEBHOOK_VERIFY_SECRET
+			})
 		)
 	).json();
-	return new Response('ok' in r && r.ok ? 'Ok' : JSON.stringify(r, null, 2));
+	return json(r);
 }
