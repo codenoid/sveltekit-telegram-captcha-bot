@@ -6,6 +6,10 @@ a captcha bot that leveraging telegram login api and cloudflare turnstile, add [
 | -------------------- | :-------------------: |
 | ![s1](static/s1.png) | ![s2](static/s2.jpeg) |
 
+## Edit
+
+Due to worst quality of Telegram Webhook (sometimes Telegram just stop sending updates), I made another part that having task to getting the join service message, check the `bot-get-update` folder
+
 ## Technology
 
 - [x] Telegram API
