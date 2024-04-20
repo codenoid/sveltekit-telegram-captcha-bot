@@ -24,15 +24,15 @@ export async function POST({ request, url, platform, locals }) {
 		}
 
 		if ('new_chat_member' in message) {
-			locals.logger.info("new webhook request", {...payload, ip});
-			locals.logger.flush()
+			locals.logger.info('new webhook request', { ...payload, ip });
+			locals.logger.flush();
 
 			try {
 				await fetch(
 					apiUrl('deleteMessage', { chat_id: message.chat.id, message_id: message.message_id })
 				);
 			} catch (e) {
-				locals.logger.error("service message delete", e);
+				locals.logger.error('service message delete', e);
 			}
 
 			const newMember = message['new_chat_member'];

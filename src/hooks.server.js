@@ -36,9 +36,9 @@ export async function handle({ event, resolve }) {
 				port: url.port,
 				pathname: url.pathname,
 				search: url.search,
-				hash: url.hash,
+				hash: url.hash
 			},
-			ip,
+			ip
 		});
 	}
 
