@@ -1,0 +1,31 @@
+import { env } from '$env/dynamic/private';
+import { apiUrl } from '$lib/api-url.js';
+import { error } from '@sveltejs/kit';
+
+export async function GET({ request, url }) {
+	const authorization = request.headers.get('Authorization');
+
+	if (!authorization || !authorization.startsWith('Basic '))
+		return new Response('Unauthorized', {
+			status: 401,
+			headers: {
+				'WWW-Authenticate': 'Basic realm="Protected"'
+			}
+		});
+
+	const token = authorization.replace('Basic ', '');
+
+	const [username, password] = Buffer.from(token, 'base64').toString().split(':');
+
+	if (username != env.ADMIN_USERNAME || password != env.ADMIN_PASSWORD) {
+		error(401, 'unauthorized');
+	}
+
+	const webhookUrl = `${url.protocol}//${url.hostname}/webhook/receive`;
+	const r = await (
+		await fetch(
+			apiUrl('getWebhookInfo', { url: webhookUrl, secret_token: env.TG_WEBHOOK_VERIFY_SECRET })
+		)
+	).json();
+	return json(r);
+}
