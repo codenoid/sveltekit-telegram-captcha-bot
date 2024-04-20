@@ -10,7 +10,7 @@ export async function POST({ request, url, platform, locals }) {
 	const ip = request.headers.get('cf-connecting-ip');
 
 	const payload = await request.json();
-	locals.logger.info("new webhook request", payload)
+	locals.logger.info("new webhook request", {...payload, ip});
 
 	if (!isInSubnet(ip, '149.154.160.0/20') && !isInSubnet(ip, '91.108.4.0/22')) {
 		locals.logger.info('Request from outside allowed subnet', { ip });
