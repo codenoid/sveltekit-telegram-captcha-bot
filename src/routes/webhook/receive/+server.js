@@ -10,7 +10,6 @@ export async function POST({ request, url, platform, locals }) {
 	const ip = request.headers.get('cf-connecting-ip');
 
 	const payload = await request.json();
-	locals.logger.info("new webhook request", {...payload, ip});
 
 	if (!isInSubnet(ip, '149.154.160.0/20') && !isInSubnet(ip, '91.108.4.0/22')) {
 		locals.logger.info('Request from outside allowed subnet', { ip });
@@ -25,6 +24,9 @@ export async function POST({ request, url, platform, locals }) {
 		}
 
 		if ('new_chat_member' in message) {
+			locals.logger.info("new webhook request", {...payload, ip});
+			locals.logger.flush()
+
 			try {
 				await fetch(
 					apiUrl('deleteMessage', { chat_id: message.chat.id, message_id: message.message_id })
