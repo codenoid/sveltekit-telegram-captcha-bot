@@ -1,0 +1,15 @@
+{
+	"name": "bot-get-update",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"author": "",
+	"license": "MIT",
+	"dependencies": {
+		"nanoid": "^5.0.7",
+		"node-telegram-bot-api": "^0.65.1"
+	}
+}
