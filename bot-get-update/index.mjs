@@ -102,7 +102,7 @@ bot.on('message', async (message) => {
 					text: `Halo [${newMember.first_name}](tg://user?id=${newMember.id}), Klik Verifikasi untuk bisa mengirim pesan`,
 					reply_markup: JSON.stringify({
 						inline_keyboard: [
-							[{ text: 'Verifikasi', login_url: { url: `${baseUrl}/verify/${requestId}` } }]
+							[{ text: 'Verifikasi', login_url: { url: `${BASE_URL}/verify/${requestId}` } }]
 						]
 					})
 				})
